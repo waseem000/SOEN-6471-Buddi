@@ -434,15 +434,11 @@ public class PrefsModel {
 	}
 	
 	public List<String> getPluginListPreference(String key){
-		if (prefsModel.getPluginListPreferences() == null)
-			prefsModel.setPluginListPreferences(new HashMap<String, List<String>>());
-		return prefsModel.getPluginListPreferences().get(key);
+		return prefsModel.getPluginListPreference(key);
 	}
 	
 	public void putPluginListPreference(String key, List<String> value){
-		if (prefsModel.getPluginListPreferences() == null)
-			prefsModel.setPluginListPreferences(new HashMap<String, List<String>>());
-		prefsModel.getPluginListPreferences().put(key, value);
+		prefsModel.putPluginListPreference(key, value);
 	}
 	
 	public boolean isDontShowNegativeSign() {
@@ -488,7 +484,7 @@ public class PrefsModel {
 	 * @param location
 	 */
 	public void putWindowLocation(String uid, Point location){
-		prefsModel.getWindowLocation().put(uid, location);
+		prefsModel.putWindowLocationForDisplay(uid, location);
 	}
 	
 	/**
@@ -501,10 +497,7 @@ public class PrefsModel {
 	 * @return
 	 */
 	public Point getWindowLocation(String uid){
-		Point p = prefsModel.getWindowLocation().get(uid);
-		if (p != null)
-			return p;
-		return new Point(100, 100);
+		return prefsModel.getWindowLocation(uid);
 	}
 	
 	/**
@@ -518,7 +511,7 @@ public class PrefsModel {
 	 * @param size
 	 */
 	public void putWindowSize(String uid, Dimension size){
-		prefsModel.getWindowSize().put(uid, size);
+		prefsModel.putWindowSize(uid, size);
 	}
 	
 	/**
@@ -531,10 +524,7 @@ public class PrefsModel {
 	 * @return
 	 */
 	public Dimension getWindowSize(String uid){
-		Dimension d = prefsModel.getWindowSize().get(uid);
-		if (d != null)
-			return d;
-		return new Dimension(640, 480);
+		return prefsModel.getWindowSize(uid);
 	}
 	
 	public boolean isSearchPaneVisible() {

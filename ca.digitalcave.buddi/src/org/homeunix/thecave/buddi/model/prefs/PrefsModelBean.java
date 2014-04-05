@@ -499,4 +499,58 @@ public class PrefsModelBean {
 		}
 		return files;
 	}
+
+	/**
+	 * Associates a certain location with the given UID.  The UID will differ by window type, as defined below: MainFrame: File.getAbsolutePath() TransactionFrame: File.getAbsolutePath() + Account.getFullName() Other: Window Name (About, Scheduled Transactions, etc).
+	 * @param uid
+	 * @param location
+	 */
+	public void putWindowLocationForDisplay(String uid, Point location) {
+		getWindowLocation().put(uid, location);
+	}
+
+	/**
+	 * Returns the window size associated with the given UID.  UID should be as follows: MainFrame: File.getAbsolutePath() TransactionFrame: File.getAbsolutePath() + Account.getFullName() Other: Window Name (About, Scheduled Transactions, etc).
+	 * @param uid
+	 * @return
+	 */
+	public Dimension getWindowSize(String uid) {
+		Dimension d = getWindowSize().get(uid);
+		if (d != null)
+			return d;
+		return new Dimension(640, 480);
+	}
+
+	/**
+	 * Associates a certain size with the given UID.  The UID will differ by window type, as defined below: MainFrame: File.getAbsolutePath() TransactionFrame: File.getAbsolutePath() + Account.getFullName() Other: Window Name (About, Scheduled Transactions, etc).
+	 * @param uid
+	 * @param size
+	 */
+	public void putWindowSize(String uid, Dimension size) {
+		getWindowSize().put(uid, size);
+	}
+
+	/**
+	 * Returns the window location associated with the given UID.  UID should be as follows: MainFrame: File.getAbsolutePath() TransactionFrame: File.getAbsolutePath() + Account.getFullName() Other: Window Name (About, Scheduled Transactions, etc).
+	 * @param uid
+	 * @return
+	 */
+	public Point getWindowLocation(String uid) {
+		Point p = getWindowLocation().get(uid);
+		if (p != null)
+			return p;
+		return new Point(100, 100);
+	}
+
+	public void putPluginListPreference(String key, List<String> value) {
+		if (getPluginListPreferences() == null)
+			setPluginListPreferences(new HashMap<String, List<String>>());
+		getPluginListPreferences().put(key, value);
+	}
+
+	public List<String> getPluginListPreference(String key) {
+		if (getPluginListPreferences() == null)
+			setPluginListPreferences(new HashMap<String, List<String>>());
+		return getPluginListPreferences().get(key);
+	}
 }
