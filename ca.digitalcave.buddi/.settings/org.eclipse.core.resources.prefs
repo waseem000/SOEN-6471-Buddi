@@ -1,0 +1,14 @@
+eclipse.preferences.version=1
+encoding//src/org/homeunix/thecave/buddi/model/impl/DateFilter.java=Cp1252
+encoding//src/org/homeunix/thecave/buddi/model/impl/TransactionFilterAllDates.java=Cp1252
+encoding//src/org/homeunix/thecave/buddi/model/impl/TransactionFilterLastMonth.java=Cp1252
+encoding//src/org/homeunix/thecave/buddi/model/impl/TransactionFilterLastQuarter.java=Cp1252
+encoding//src/org/homeunix/thecave/buddi/model/impl/TransactionFilterLastSemiMonth.java=Cp1252
+encoding//src/org/homeunix/thecave/buddi/model/impl/TransactionFilterLastYear.java=Cp1252
+encoding//src/org/homeunix/thecave/buddi/model/impl/TransactionFilterThisMonth.java=Cp1252
+encoding//src/org/homeunix/thecave/buddi/model/impl/TransactionFilterThisQuarter.java=Cp1252
+encoding//src/org/homeunix/thecave/buddi/model/impl/TransactionFilterThisSemiMonth.java=Cp1252
+encoding//src/org/homeunix/thecave/buddi/model/impl/TransactionFilterThisWeek.java=Cp1252
+encoding//src/org/homeunix/thecave/buddi/model/impl/TransactionFilterThisYear.java=Cp1252
+encoding//src/org/homeunix/thecave/buddi/model/impl/TransactionFilterToday.java=Cp1252
+encoding//src/org/homeunix/thecave/buddi/model/impl/TransactionFilterYesterday.java=Cp1252
