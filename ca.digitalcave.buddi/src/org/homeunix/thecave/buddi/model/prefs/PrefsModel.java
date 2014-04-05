@@ -159,14 +159,11 @@ public class PrefsModel {
 	}
 
 	public String getDateFormat() {
-		if (prefsModel.getDateFormat() == null || prefsModel.getDateFormat().length() == 0) 
-			prefsModel.setDateFormat("yyyy/MM/dd");
-		return prefsModel.getDateFormat();
+		return prefsModel.getDateFormatForDisplay();
 	}
 
 	public void setDateFormat(String dateFormat) {
-		if (dateFormat != null && dateFormat.length() > 0)
-			prefsModel.setDateFormat(dateFormat);
+		prefsModel.setDateFormatForDisplay(dateFormat);
 	}
 
 	public String getLanguage() {
@@ -181,23 +178,11 @@ public class PrefsModel {
 	}
 
 	public List<File> getLastDataFiles() {
-		if (prefsModel.getLastDataFiles() == null || prefsModel.getLastDataFiles().size() == 0)
-			return null;
-		List<File> files = new LinkedList<File>();
-		for (String s : prefsModel.getLastDataFiles()) {
-			files.add(new File(s));
-		}
-		return files;
+		return prefsModel.getLastDataFilesForDisplay();
 	}
 
 	public void setLastDataFiles(List<File> lastDataFiles) {
-		if (lastDataFiles != null){
-			List<String> strings = new LinkedList<String>();
-			for (File file : lastDataFiles) {
-				strings.add(file + "");
-			}
-			prefsModel.setLastDataFiles(strings);
-		}
+		prefsModel.setLastDataFilesForDisplay(lastDataFiles);
 	}
 
 //	public Dimension getMainWindowSize() {

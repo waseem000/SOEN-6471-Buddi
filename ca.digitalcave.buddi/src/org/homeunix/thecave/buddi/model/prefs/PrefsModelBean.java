@@ -5,7 +5,9 @@ package org.homeunix.thecave.buddi.model.prefs;
 
 import java.awt.Dimension;
 import java.awt.Point;
+import java.io.File;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -465,5 +467,36 @@ public class PrefsModelBean {
 	
 	public void setBackupLocation(String backupLocation) {
 		this.backupLocation = backupLocation;
+	}
+
+	public void setLastDataFilesForDisplay(List<File> lastDataFiles) {
+		if (lastDataFiles != null) {
+			List<String> strings = new LinkedList<String>();
+			for (File file : lastDataFiles) {
+				strings.add(file + "");
+			}
+			setLastDataFiles(strings);
+		}
+	}
+
+	public void setDateFormatForDisplay(String dateFormat) {
+		if (dateFormat != null && dateFormat.length() > 0)
+			setDateFormat(dateFormat);
+	}
+
+	public String getDateFormatForDisplay() {
+		if (getDateFormat() == null || getDateFormat().length() == 0)
+			setDateFormat("yyyy/MM/dd");
+		return getDateFormat();
+	}
+
+	public List<File> getLastDataFilesForDisplay() {
+		if (getLastDataFiles() == null || getLastDataFiles().size() == 0)
+			return null;
+		List<File> files = new LinkedList<File>();
+		for (String s : getLastDataFiles()) {
+			files.add(new File(s));
+		}
+		return files;
 	}
 }
