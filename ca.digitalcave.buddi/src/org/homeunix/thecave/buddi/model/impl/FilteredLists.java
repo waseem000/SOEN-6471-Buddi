@@ -179,7 +179,7 @@ public class FilteredLists {
 	public static class TransactionListFilteredBySearch extends BuddiFilteredList<Transaction> {
 		private final Document model;
 		private String searchText;
-		private TransactionDateFilterKeys dateFilter;
+		private DateFilter dateFilter;
 		private TransactionClearedFilterKeys clearedFilter;
 		private TransactionReconciledFilterKeys reconciledFilter;
 		private final Source associatedSource;
@@ -190,7 +190,47 @@ public class FilteredLists {
 			this.associatedSource = associatedSource;
 		}
 		public void setDateFilter(TransactionDateFilterKeys dateFilter) {
-			this.dateFilter = dateFilter;
+			switch (dateFilter) {
+			case TRANSACTION_FILTER_LAST_YEAR:
+				this.dateFilter = new TransactionFilterLastYear();
+				break;
+			case TRANSACTION_FILTER_THIS_YEAR:
+				this.dateFilter = new TransactionFilterThisYear();
+				break;
+			case TRANSACTION_FILTER_LAST_QUARTER:
+				this.dateFilter = new TransactionFilterLastQuarter();
+				break;
+			case TRANSACTION_FILTER_THIS_QUARTER:
+				this.dateFilter = new TransactionFilterThisQuarter();
+				break;
+			case TRANSACTION_FILTER_LAST_MONTH:
+				this.dateFilter = new TransactionFilterLastMonth();
+				break;
+			case TRANSACTION_FILTER_THIS_MONTH:
+				this.dateFilter = new TransactionFilterThisMonth();
+				break;
+			case TRANSACTION_FILTER_LAST_SEMI_MONTH:
+				this.dateFilter = new TransactionFilterLastSemiMonth();
+				break;
+			case TRANSACTION_FILTER_THIS_SEMI_MONTH:
+				this.dateFilter = new TransactionFilterThisSemiMonth();
+				break;
+			case TRANSACTION_FILTER_THIS_WEEK:
+				this.dateFilter = new TransactionFilterThisWeek();
+				break;
+			case TRANSACTION_FILTER_YESTERDAY:
+				this.dateFilter = new TransactionFilterYesterday();
+				break;
+			case TRANSACTION_FILTER_TODAY:
+				this.dateFilter = new TransactionFilterToday();
+				break;
+			case TRANSACTION_FILTER_ALL_DATES:
+				this.dateFilter = new TransactionFilterAllDates();
+				break;
+			default:
+				this.dateFilter = null;
+				break;
+			}
 		}
 		public void setClearedFilter(TransactionClearedFilterKeys clearedFilter){
 			this.clearedFilter = clearedFilter;
@@ -305,51 +345,13 @@ public class FilteredLists {
 		}
 
 		private boolean acceptDate(Transaction t) {
-			if (null == dateFilter || TransactionDateFilterKeys.TRANSACTION_FILTER_ALL_DATES == dateFilter) {
+			if (null == getDateFilter() || TransactionDateFilterKeys.TRANSACTION_FILTER_ALL_DATES == getDateFilter()) {
 				return true;
 			}
 
 			Date today = new Date();
 
-			if (TransactionDateFilterKeys.TRANSACTION_FILTER_TODAY == dateFilter) {
-				return DateUtil.isSameDay(today, t.getDate());
-			}
-			else if (TransactionDateFilterKeys.TRANSACTION_FILTER_YESTERDAY == dateFilter) {
-				return DateUtil.isSameDay(DateUtil.addDays(today, -1), t.getDate());
-			}
-			else if (TransactionDateFilterKeys.TRANSACTION_FILTER_THIS_WEEK == dateFilter) {
-				return DateUtil.isSameWeek(today, t.getDate());
-			}
-			else if (TransactionDateFilterKeys.TRANSACTION_FILTER_THIS_SEMI_MONTH == dateFilter) {
-				BudgetCategoryType semiMonth = new BudgetCategoryTypeSemiMonthly();
-				return (semiMonth.getStartOfBudgetPeriod(new Date()).equals(semiMonth.getStartOfBudgetPeriod(t.getDate())));
-			}
-			else if (TransactionDateFilterKeys.TRANSACTION_FILTER_LAST_SEMI_MONTH == dateFilter) {
-				BudgetCategoryType semiMonth = new BudgetCategoryTypeSemiMonthly();
-				return (semiMonth.getStartOfBudgetPeriod(semiMonth.getBudgetPeriodOffset(new Date(), -1)).equals(semiMonth.getStartOfBudgetPeriod(t.getDate())));
-			}
-			else if (TransactionDateFilterKeys.TRANSACTION_FILTER_THIS_MONTH == dateFilter) {
-				return DateUtil.isSameMonth(today, t.getDate());
-			}
-			else if (TransactionDateFilterKeys.TRANSACTION_FILTER_LAST_MONTH == dateFilter) {
-				return DateUtil.isSameMonth(DateUtil.addMonths(today, -1), t.getDate());
-			}
-			else if (TransactionDateFilterKeys.TRANSACTION_FILTER_THIS_QUARTER == dateFilter) {
-				return DateUtil.getStartOfDay(DateUtil.getStartOfQuarter(today)).before(t.getDate());
-			}
-			else if (TransactionDateFilterKeys.TRANSACTION_FILTER_LAST_QUARTER == dateFilter) {
-				return DateUtil.isSameDay(DateUtil.getStartOfQuarter(DateUtil.addQuarters(today, -1)), DateUtil.getStartOfQuarter(t.getDate()));
-			}
-			else if (TransactionDateFilterKeys.TRANSACTION_FILTER_THIS_YEAR == dateFilter) {
-				return DateUtil.isSameYear(today, t.getDate());				
-			}
-			else if (TransactionDateFilterKeys.TRANSACTION_FILTER_LAST_YEAR == dateFilter) {
-				return DateUtil.isSameYear(DateUtil.addYears(today, -1), t.getDate());
-			}
-			else {
-				Logger.getLogger(this.getClass().getName()).warning("Unknown filter pulldown: " + dateFilter);
-				return false;
-			}
+			return dateFilter.acceptDate(t, today, this);
 		}
 
 		private boolean acceptText(Transaction t) {
@@ -368,6 +370,9 @@ public class FilteredLists {
 					|| TextFormatter.getFormattedCurrency(t.getAmount()).replaceAll("[^\\d" + decimal + "]", "").contains(searchText.toLowerCase()))
 					|| TextFormatter.getDateFormat().format(t.getDate()).toLowerCase().contains(searchText.toLowerCase());
 
+		}
+		public TransactionDateFilterKeys getDateFilter() {
+			return dateFilter.getDateFilter();
 		}	
 	}
 
