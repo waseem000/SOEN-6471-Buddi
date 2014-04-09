@@ -189,8 +189,8 @@ public class FilteredLists {
 			this.model = model;
 			this.associatedSource = associatedSource;
 		}
-		public void setDateFilter(TransactionDateFilterKeys dateFilter) {
-			switch (dateFilter) {
+		public void setDateFilter(TransactionDateFilterKeys dateFilterType) {
+			switch (dateFilterType) {
 			case TRANSACTION_FILTER_LAST_YEAR:
 				this.dateFilter = new TransactionFilterLastYear();
 				break;
@@ -372,6 +372,9 @@ public class FilteredLists {
 
 		}
 		public TransactionDateFilterKeys getDateFilter() {
+			if(dateFilter == null)
+				return new TransactionFilterAllDates().getDateFilter();
+					
 			return dateFilter.getDateFilter();
 		}	
 	}
